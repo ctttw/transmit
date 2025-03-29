@@ -60,15 +60,31 @@ body {
 }
 
 .nav-menu {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: -280px;
+  width: 280px;
+  height: 100vh;
+  background-color: var(--primary-color);
+  padding: 80px 1rem 1rem;
+  box-shadow: -4px 0 10px rgba(0,0,0,0.1);
+  flex-direction: column;
+  transition: right 0.3s ease;
+  z-index: 999;
+}
+
+.nav-menu.active {
   display: flex;
-  gap: 1rem;
+  right: 0;
 }
 
 .nav-menu a {
   color: white;
   text-decoration: none;
   font-weight: 500;
-  padding: 0.5rem 1rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
   border-radius: var(--border-radius);
   transition: var(--transition);
 }
@@ -502,26 +518,11 @@ button:focus:not(:active)::after {
     position: absolute;
     right: 1rem;
     top: 1rem;
+    z-index: 1001;
   }
 
   .nav-menu {
-    display: none;
-    flex-direction: column;
-    width: 100%;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: var(--primary-color);
-    padding: 1rem 0;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-  }
-
-  .nav-menu.active {
-    display: flex;
-  }
-
-  .nav-menu a {
-    padding: 0.75rem 1rem;
+    /* These properties are already set in the main styles now */
   }
 }
 

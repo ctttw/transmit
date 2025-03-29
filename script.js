@@ -186,8 +186,14 @@ const navMenu = document.getElementById('navMenu');
 
 menuIcon.addEventListener('click', () => {
   navMenu.classList.toggle('active');
+  menuIcon.classList.toggle('active');
+  
+  // 切換菜單圖標
   if (navMenu.classList.contains('active')) {
-    gsap.from(".nav-menu a", {duration: 0.3, opacity: 0, y: -20, stagger: 0.1, ease: "power2.out"});
+    menuIcon.innerHTML = '<i class="fas fa-times"></i>';
+    gsap.from(".nav-menu a", {duration: 0.3, opacity: 0, x: 20, stagger: 0.1, ease: "power2.out"});
+  } else {
+    menuIcon.innerHTML = '<i class="fas fa-bars"></i>';
   }
 });
 
