@@ -127,6 +127,8 @@ const span = document.getElementsByClassName("close")[0];
 function showInfoModal() {
   modal.style.display = "block";
   gsap.from(".modal-content", {duration: 0.5, opacity: 0, y: -50, ease: "back.out(1.7)"});
+  gsap.from(".guide-step", {duration: 0.5, opacity: 0, x: window.innerWidth <= 768 ? 0 : -30, y: window.innerWidth <= 768 ? -20 : 0, stagger: 0.1, ease: "power2.out", delay: 0.3});
+  gsap.from(".notice", {duration: 0.5, opacity: 0, y: 20, ease: "power2.out", delay: 0.6});
 }
 
 span.onclick = function() {
@@ -196,6 +198,48 @@ menuIcon.addEventListener('click', () => {
     menuIcon.innerHTML = '<i class="fas fa-bars"></i>';
   }
 });
+
+// 添加點擊頁面其他區域關閉菜單的功能
+document.addEventListener('click', function(event) {
+  const isMenuIcon = event.target.closest('#menuIcon');
+  const isNavMenu = event.target.closest('#navMenu');
+  
+  if (!isMenuIcon && !isNavMenu && navMenu.classList.contains('active')) {
+    navMenu.classList.remove('active');
+    menuIcon.classList.remove('active');
+    menuIcon.innerHTML = '<i class="fas fa-bars"></i>';
+  }
+});
+
+// 添加響應式檢測，自動調整元素
+function checkMobileView() {
+  if (window.innerWidth <= 768) {
+    // 在移動設備上自動調整 hCaptcha 的容器尺寸
+    const hCaptchaContainer = document.querySelector('.h-captcha-container');
+    if (hCaptchaContainer) {
+      if (window.innerWidth <= 320) {
+        hCaptchaContainer.style.transformOrigin = 'left top';
+        hCaptchaContainer.style.transform = 'scale(0.68)';
+      } else if (window.innerWidth <= 480) {
+        hCaptchaContainer.style.transformOrigin = 'left top';
+        hCaptchaContainer.style.transform = 'scale(0.77)';
+      } else {
+        hCaptchaContainer.style.transformOrigin = 'left top';
+        hCaptchaContainer.style.transform = 'scale(0.85)';
+      }
+    }
+  } else {
+    // 重置為桌面版佈局
+    const hCaptchaContainer = document.querySelector('.h-captcha-container');
+    if (hCaptchaContainer) {
+      hCaptchaContainer.style.transform = 'none';
+    }
+  }
+}
+
+// 首次加載和窗口大小變化時檢查
+window.addEventListener('load', checkMobileView);
+window.addEventListener('resize', checkMobileView);
 
 // 添加粒子背景效果
 function setupParticles() {
