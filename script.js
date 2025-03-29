@@ -191,7 +191,64 @@ menuIcon.addEventListener('click', () => {
   }
 });
 
+// 添加粒子背景效果
+function setupParticles() {
+  if (!CONFIG.theme.enableParticles) return;
+  
+  const particles = document.createElement('div');
+  particles.className = 'particles';
+  document.body.appendChild(particles);
+  
+  for (let i = 0; i < CONFIG.theme.particleCount; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    particle.style.left = `${Math.random() * 100}vw`;
+    particle.style.top = `${Math.random() * 100}vh`;
+    particle.style.animationDuration = `${Math.random() * 30 + 10}s`;
+    particle.style.animationDelay = `${Math.random() * 5}s`;
+    particles.appendChild(particle);
+  }
+}
+
+// 添加波浪SVG效果
+function setupWaveSVG() {
+  if (!CONFIG.theme.enableWaveSVG) return;
+  
+  const wave = document.createElement('div');
+  wave.className = 'wave-container';
+  wave.innerHTML = `
+    <svg class="wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+      <path fill="rgba(108, 99, 255, 0.1)" fill-opacity="1" d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,224C672,245,768,267,864,261.3C960,256,1056,224,1152,208C1248,192,1344,192,1392,192L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+    </svg>
+    <svg class="wave wave2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+      <path fill="rgba(255, 101, 132, 0.1)" fill-opacity="1" d="M0,64L48,80C96,96,192,128,288,138.7C384,149,480,139,576,122.7C672,107,768,85,864,90.7C960,96,1056,128,1152,138.7C1248,149,1344,139,1392,133.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+    </svg>
+  `;
+  document.body.appendChild(wave);
+}
+
 // 初始化頁面動畫
 window.addEventListener('load', () => {
   gsap.from(".icon", {duration: 0.8, opacity: 0, y: -50, ease: "back.out(1.7)"});
+  setupParticles();
+  setupWaveSVG();
+  
+  // 添加容器入場動畫
+  gsap.from(".container", {
+    duration: 1,
+    opacity: 0,
+    y: 50,
+    ease: "power3.out",
+    delay: 0.3
+  });
+  
+  // 依次顯示表單元素
+  gsap.from("form > *", {
+    duration: 0.5,
+    opacity: 0,
+    y: 20,
+    stagger: 0.1,
+    ease: "power2.out",
+    delay: 0.6
+  });
 });
