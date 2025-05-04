@@ -10,10 +10,11 @@ const CONFIG = {
   
   // 新的設計配置
   theme: {
-    enableParticles: true,      // 啟用粒子背景效果
-    particleCount: 30,          // 粒子數量
-    particleColor: '#6C63FF',   // 粒子顏色
-    enableWaveSVG: true,        // 啟用波浪SVG效果
+    primaryColor: '#3B82F6',      // 主要顏色
+    accentColor: '#8B5CF6',       // 強調色
+    secondaryColor: '#EC4899',    // 次要顏色
+    animationSpeed: 0.3,          // 動畫速度
+    borderRadius: '12px',         // 邊框圓角
   }
 };
 

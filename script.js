@@ -186,18 +186,33 @@ document.onselectstart = function() {
 const menuIcon = document.getElementById('menuIcon');
 const navMenu = document.getElementById('navMenu');
 
-menuIcon.addEventListener('click', () => {
+menuIcon.addEventListener('click', function(e) {
+  e.stopPropagation(); // 防止事件冒泡
+  toggleMenu();
+});
+
+function toggleMenu() {
   navMenu.classList.toggle('active');
-  menuIcon.classList.toggle('active');
   
-  // 切換菜單圖標
   if (navMenu.classList.contains('active')) {
     menuIcon.innerHTML = '<i class="fas fa-times"></i>';
+    // 確保菜單顯示
+    navMenu.style.display = 'flex';
+    navMenu.style.right = '0';
+    
     gsap.from(".nav-menu a", {duration: 0.3, opacity: 0, x: 20, stagger: 0.1, ease: "power2.out"});
   } else {
     menuIcon.innerHTML = '<i class="fas fa-bars"></i>';
+    // 動畫結束後隱藏菜單
+    gsap.to(navMenu, {
+      right: '-280px',
+      duration: 0.3,
+      onComplete: function() {
+        navMenu.style.display = '';
+      }
+    });
   }
-});
+}
 
 // 添加點擊頁面其他區域關閉菜單的功能
 document.addEventListener('click', function(event) {
@@ -205,9 +220,7 @@ document.addEventListener('click', function(event) {
   const isNavMenu = event.target.closest('#navMenu');
   
   if (!isMenuIcon && !isNavMenu && navMenu.classList.contains('active')) {
-    navMenu.classList.remove('active');
-    menuIcon.classList.remove('active');
-    menuIcon.innerHTML = '<i class="fas fa-bars"></i>';
+    toggleMenu();
   }
 });
 
@@ -228,11 +241,25 @@ function checkMobileView() {
         hCaptchaContainer.style.transform = 'scale(0.85)';
       }
     }
+    
+    // 調整菜單樣式為移動版
+    const navMenu = document.getElementById('navMenu');
+    if (navMenu && !navMenu.classList.contains('active')) {
+      navMenu.style.display = '';
+      navMenu.style.right = '-280px';
+    }
   } else {
     // 重置為桌面版佈局
     const hCaptchaContainer = document.querySelector('.h-captcha-container');
     if (hCaptchaContainer) {
       hCaptchaContainer.style.transform = 'none';
+    }
+    
+    // 調整菜單樣式為桌面版
+    const navMenu = document.getElementById('navMenu');
+    if (navMenu) {
+      navMenu.style.display = 'flex';
+      navMenu.style.right = '0';
     }
   }
 }
@@ -243,62 +270,71 @@ window.addEventListener('resize', checkMobileView);
 
 // 添加粒子背景效果
 function setupParticles() {
-  if (!CONFIG.theme.enableParticles) return;
-  
-  const particles = document.createElement('div');
-  particles.className = 'particles';
-  document.body.appendChild(particles);
-  
-  for (let i = 0; i < CONFIG.theme.particleCount; i++) {
-    const particle = document.createElement('div');
-    particle.className = 'particle';
-    particle.style.left = `${Math.random() * 100}vw`;
-    particle.style.top = `${Math.random() * 100}vh`;
-    particle.style.animationDuration = `${Math.random() * 30 + 10}s`;
-    particle.style.animationDelay = `${Math.random() * 5}s`;
-    particles.appendChild(particle);
-  }
+  // 移除粒子效果，改為背景形狀
+  return;
 }
 
 // 添加波浪SVG效果
 function setupWaveSVG() {
-  if (!CONFIG.theme.enableWaveSVG) return;
-  
-  const wave = document.createElement('div');
-  wave.className = 'wave-container';
-  wave.innerHTML = `
-    <svg class="wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-      <path fill="rgba(108, 99, 255, 0.1)" fill-opacity="1" d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,224C672,245,768,267,864,261.3C960,256,1056,224,1152,208C1248,192,1344,192,1392,192L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
-    </svg>
-    <svg class="wave wave2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-      <path fill="rgba(255, 101, 132, 0.1)" fill-opacity="1" d="M0,64L48,80C96,96,192,128,288,138.7C384,149,480,139,576,122.7C672,107,768,85,864,90.7C960,96,1056,128,1152,138.7C1248,149,1344,139,1392,133.3L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
-    </svg>
-  `;
-  document.body.appendChild(wave);
+  // 移除波浪效果，改為背景形狀
+  return;
 }
 
 // 初始化頁面動畫
-window.addEventListener('load', () => {
-  gsap.from(".icon", {duration: 0.8, opacity: 0, y: -50, ease: "back.out(1.7)"});
-  setupParticles();
-  setupWaveSVG();
+document.addEventListener('DOMContentLoaded', function() {
+  // 使用GSAP動畫庫為背景形狀添加動畫
+  const shapes = document.querySelectorAll('.shape');
   
-  // 添加容器入場動畫
-  gsap.from(".container", {
-    duration: 1,
-    opacity: 0,
-    y: 50,
-    ease: "power3.out",
-    delay: 0.3
+  shapes.forEach((shape, index) => {
+    gsap.to(shape, {
+      x: Math.random() * 50 - 25,
+      y: Math.random() * 50 - 25,
+      scale: 0.9 + Math.random() * 0.3,
+      duration: 15 + Math.random() * 10,
+      ease: "sine.inOut",
+      repeat: -1,
+      yoyo: true,
+      delay: index * 0.5
+    });
   });
   
-  // 依次顯示表單元素
-  gsap.from("form > *", {
-    duration: 0.5,
+  // 標題文字效果
+  gsap.from("h2", {
+    opacity: 0,
+    y: -20,
+    duration: 1,
+    ease: "power2.out"
+  });
+  
+  // 表單元素淡入
+  gsap.from("form", {
     opacity: 0,
     y: 20,
-    stagger: 0.1,
-    ease: "power2.out",
-    delay: 0.6
+    duration: 1,
+    delay: 0.3,
+    ease: "power2.out"
   });
+  
+  // 圖標動畫
+  gsap.from(".icon", {
+    opacity: 0,
+    scale: 0.5,
+    duration: 1,
+    delay: 0.2,
+    ease: "back.out(1.7)"
+  });
+  
+  // 確保菜單初始狀態正確
+  const navMenu = document.getElementById('navMenu');
+  const menuIcon = document.getElementById('menuIcon');
+  
+  // 重置菜單狀態
+  navMenu.classList.remove('active');
+  menuIcon.innerHTML = '<i class="fas fa-bars"></i>';
+  
+  // 在移動設備上設置正確的初始樣式
+  if (window.innerWidth <= 768) {
+    navMenu.style.display = '';
+    navMenu.style.right = '-280px';
+  }
 });
