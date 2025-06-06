@@ -1,6 +1,6 @@
 const CONFIG = {
   // Google Apps Script Web 應用部署 URL
-  scriptUrl: 'https://script.google.com/macros/s/AKfycbxZlxQi1zrGXuFhk1pLMS7pRtrNsnKsU19dD0Nocr5eVcHQjjFiDrrH98AosW6Rk-B3bg/exec',
+  scriptUrl: 'https://script.google.com/macros/s/AKfycbx_gB70EtdBt0h8xnTpanNRKsuZSxCF0fD7KUCoe798xJeXZrkL8sxhbFZUEWYQy42Cng/exec',
   
   // 系統設定
   hCaptchaSitekey: '10000000-ffff-ffff-ffff-000000000001', // hCaptcha site key
